@@ -11,6 +11,65 @@ function M.highlight(highlights, termcolors)
     end
 end
 
+local transparent_background_groups = {
+    "Normal",
+    "NormalNC",
+    "NormalFloat",
+    "FloatBorder",
+    "FloatTitle",
+    "FloatFooter",
+    "LineNr",
+    "CursorLineNr",
+    "FoldColumn",
+    "SignColumn",
+    "StatusLine",
+    "StatusLineNC",
+    "TabLine",
+    "TabLineFill",
+    "TabLineSel",
+    "WinBar",
+    "WinBarNC",
+    "MsgSeparator",
+    "Pmenu",
+    "PmenuKind",
+    "PmenuExtra",
+    "PmenuSbar",
+    "GitSignsAdd",
+    "GitSignsChange",
+    "GitSignsDelete",
+    "DiagnosticSignError",
+    "DiagnosticSignWarn",
+    "DiagnosticSignInfo",
+    "DiagnosticSignHint",
+    "TreesitterContextLineNumber",
+    "TelescopeBorder",
+    "NotifyBackground",
+    "FloatermBorder",
+    "CmpCompletionBorder",
+    "BlinkCmpMenuBorder",
+    "MiniDiffSignAdd",
+    "MiniDiffSignChange",
+    "MiniDiffSignDelete",
+    "MiniFilesTitle",
+    "MiniFilesTitleFocused",
+    "MiniPickPrompt",
+    "MiniStatuslineDevinfo",
+    "MiniStatuslineFileinfo",
+    "MiniStatuslineFilename",
+    "MiniTablineCurrent",
+    "MiniTablineHidden",
+    "MiniTablineVisible",
+}
+
+---@param highlights table
+local function apply_transparency(highlights)
+    for _, group in ipairs(transparent_background_groups) do
+        if highlights[group] then
+            highlights[group].bg = "NONE"
+        end
+    end
+end
+
 ---@param colors KanagawaColors
 ---@param config? KanagawaConfig
 function M.setup(colors, config)
@@ -22,6 +81,10 @@ function M.setup(colors, config)
         for hl, spec in pairs(mod.setup(colors, config)) do
             highlights[hl] = spec
         end
+    end
+
+    if config.transparent then
+        apply_transparency(highlights)
     end
 
     for hl, spec in pairs(config.overrides(colors)) do

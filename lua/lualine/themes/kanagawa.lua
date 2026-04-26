@@ -1,11 +1,13 @@
 local theme = require("kanagawa.colors").setup().theme
+local config = require("kanagawa").config
+local transparent_bg = config.transparent and "NONE" or nil
 
 local kanagawa = {}
 
 kanagawa.normal = {
   a = { bg = theme.syn.fun, fg = theme.ui.bg_m3 },
   b = { bg = theme.diff.change, fg = theme.syn.fun },
-  c = { bg = theme.ui.bg_p1, fg = theme.ui.fg },
+  c = { bg = transparent_bg or theme.ui.bg_p1, fg = theme.ui.fg },
 }
 
 kanagawa.insert = {
@@ -29,9 +31,9 @@ kanagawa.replace = {
 }
 
 kanagawa.inactive = {
-  a = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
-  b = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim, gui = "bold" },
-  c = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
+  a = { bg = transparent_bg or theme.ui.bg_m3, fg = theme.ui.fg_dim },
+  b = { bg = transparent_bg or theme.ui.bg_m3, fg = theme.ui.fg_dim, gui = "bold" },
+  c = { bg = transparent_bg or theme.ui.bg_m3, fg = theme.ui.fg_dim },
 }
 
 if vim.g.kanagawa_lualine_bold then
